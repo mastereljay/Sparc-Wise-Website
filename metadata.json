@@ -1,0 +1,7 @@
+{
+  "name": "Sparc Wise",
+  "description": "Strengthening Partnerships And Reviving Communities With Innovative Solutions for Everyone. A nonprofit dedicated to uplifting Josephine County, Oregon through housing, education, and economic development.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

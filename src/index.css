@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-primary: #5A5A40; /* Olive/Earth tone from Recipe 6 */
+  --color-accent: #FF6321; /* Bold orange from Recipe 10 */
+}
+
+@layer base {
+  :root {
+    --bg: #f5f2ed;
+    --ink: #1a1a1a;
+  }
+
+  .dark {
+    --bg: #0a0a0a;
+    --ink: #f5f2ed;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
