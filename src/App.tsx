@@ -209,7 +209,9 @@ export default function App() {
   const heroY = useTransform(heroScroll, [0, 0.5], [0, 100]);
   const heroBgY = useTransform(heroScroll, [0, 1], ["0%", "30%"]);
 
-
+  // Parallax transforms for hero text
+  const heroTextLeft = useTransform(heroScroll, [0, 1], [0, -50]);
+  const heroTextRight = useTransform(heroScroll, [0, 1], [0, 50]);
 
   // Background color transition
   const bgColor = useTransform(
@@ -218,10 +220,22 @@ export default function App() {
     ["#ffffff", "#f5f5f0", "#ffffff", "#0a0a0a", "#ffffff", "#ffffff"]
   );
 
+  // Vision image transforms
+  const visionScale = useTransform(scrollYProgress, [0.1, 0.3], [1, 1.2]);
+  const visionRotate = useTransform(scrollYProgress, [0.1, 0.3], [0, 5]);
+
+  // Impact text transform
+  const impactX = useTransform(scrollYProgress, [0.5, 0.8], ["-20%", "20%"]);
+
+  // Public section rotate
+  const publicRotate = useTransform(scrollYProgress, [0.7, 0.9], [0, 10]);
+
+  // SVG path length
+  const pathLength = useTransform(pathScrollYProgress, [0, 1], [0, 1]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -250,13 +264,11 @@ export default function App() {
       className="min-h-screen font-sans selection:bg-accent selection:text-white overflow-x-hidden max-w-full relative transition-colors duration-500"
     >
       <CustomCursor />
-      {/* Scroll Progress Bar */}
       <motion.div 
         className="fixed top-0 left-0 right-0 h-1 bg-accent z-[60] origin-left"
         style={{ scaleX: scaleProgress }}
       />
 
-      {/* Navigation */}
       <nav className={cn(
         "fixed top-0 w-full z-50 transition-all duration-300 px-6 py-4",
         scrolled ? "bg-white/80 dark:bg-black/80 backdrop-blur-md shadow-sm" : "bg-transparent"
@@ -273,7 +285,6 @@ export default function App() {
             <span className="font-serif text-2xl font-bold tracking-tight">Sparc Wise</span>
           </motion.a>
 
-          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {NAV_ITEMS.map((item, idx) => (
               <motion.a 
@@ -304,7 +315,6 @@ export default function App() {
             </motion.a>
           </div>
 
-          {/* Mobile Menu Toggle */}
           <div className="md:hidden flex items-center gap-4">
             <button onClick={() => setIsDarkMode(!isDarkMode)}>
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -316,7 +326,6 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
@@ -345,7 +354,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Hero Section */}
       <motion.section id="home" ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
         <motion.div 
           className="absolute inset-0 z-0"
@@ -355,7 +363,6 @@ export default function App() {
             src={heroImage}
             alt="Grants Pass Oregon" 
             className="w-full h-full object-cover opacity-40 dark:opacity-20 grayscale"
-            referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg/50 to-bg" />
         </motion.div>
@@ -364,7 +371,7 @@ export default function App() {
           className="relative z-10 max-w-5xl mx-auto px-6 text-center"
           style={{ opacity: heroOpacity, scale: heroScale, y: heroY }}
         >
-            <motion.div
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -374,13 +381,13 @@ export default function App() {
             </span>
             <h1 className="text-5xl md:text-8xl font-serif font-bold leading-[0.9] mb-8 tracking-tighter">
               <motion.span 
-                style={{ x: useTransform(heroScroll, [0, 1], [0, -50]) }}
+                style={{ x: heroTextLeft }}
                 className="block"
               >
                 Strengthening <span className="italic text-primary">Partnerships</span>,
               </motion.span>
               <motion.span 
-                style={{ x: useTransform(heroScroll, [0, 1], [0, 50]) }}
+                style={{ x: heroTextRight }}
                 className="block"
               >
                 Reviving <span className="italic text-accent">Communities</span>.
@@ -411,7 +418,6 @@ export default function App() {
         </motion.div>
       </motion.section>
 
-      {/* Vision Section */}
       <section id="vision" className="py-32 px-6 relative overflow-hidden">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start relative z-10">
           <div className="md:sticky md:top-32 h-fit">
@@ -424,14 +430,10 @@ export default function App() {
             >
               <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white dark:border-zinc-900">
                 <motion.img 
-                  style={{ 
-                    scale: useTransform(scrollYProgress, [0.1, 0.3], [1, 1.2]),
-                    rotate: useTransform(scrollYProgress, [0.1, 0.3], [0, 5])
-                  }}
+                  style={{ scale: visionScale, rotate: visionRotate }}
                   src={visionImage} 
                   alt="Community Impact" 
                   className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
                 />
               </div>
               <motion.div 
@@ -464,7 +466,7 @@ export default function App() {
               {[
                 { title: "Identify & Fill Service Gaps", desc: "We work collaboratively with existing organizations to identify genuine service gaps rather than duplicating efforts. Our goal is to strengthen the entire ecosystem of support." },
                 { title: "Universal Needs-Based Support", desc: "Serving all individuals based solely on their circumstances, regardless of background or identity. We believe in radical inclusivity and dignity for all." },
-                { title: "Sustainable Community Assets", desc: "Revitalizing underutilized properties—including hotels and agricultural facilities—to serve as anchor sites for change. These assets become the foundation for our programs." }
+                { title: "Sustainable Community Assets", desc: "Revitalizing underutilized properties\u2014including hotels and agricultural facilities\u2014to serve as anchor sites for change. These assets become the foundation for our programs." }
               ].map((item, idx) => (
                 <motion.div 
                   key={idx}
@@ -488,7 +490,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* News Section */}
       <section id="news" className="py-32 px-6 border-t border-ink/5">
         <div className="max-w-7xl mx-auto">
           <motion.div 
@@ -534,7 +535,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Programs Section */}
       <section id="programs" className="py-32 bg-ink text-bg relative">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div 
@@ -553,15 +553,10 @@ export default function App() {
               return (
                 <motion.div 
                   key={program.id}
-                  whileHover={{ 
-                    y: -10,
-                    scale: 1.05,
-                    boxShadow: "0 20px 30px -10px rgba(255,255,255,0.1)"
-                  }}
+                  whileHover={{ y: -10, scale: 1.05, boxShadow: "0 20px 30px -10px rgba(255,255,255,0.1)" }}
                   className="bg-white/5 backdrop-blur-md p-12 rounded-[3rem] border border-white/10 flex flex-col justify-between group relative overflow-hidden transition-all duration-300"
                 >
                   <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors" />
-                  
                   <div>
                     <div className="w-20 h-20 bg-accent text-white rounded-[2rem] flex items-center justify-center mb-10 group-hover:rotate-12 transition-transform duration-500 shadow-lg shadow-accent/20">
                       <Icon size={40} />
@@ -569,7 +564,6 @@ export default function App() {
                     <h3 className="text-3xl font-serif font-bold mb-8 italic">{program.title}</h3>
                     <p className="opacity-70 mb-10 text-lg leading-relaxed">{program.description}</p>
                   </div>
-
                   <ul className="space-y-4">
                     {program.details.map((detail, i) => (
                       <li key={i} className="flex items-start gap-4 text-sm opacity-80 group-hover:opacity-100 transition-opacity">
@@ -578,7 +572,6 @@ export default function App() {
                       </li>
                     ))}
                   </ul>
-
                   <div className="mt-12 pt-8 border-t border-white/10 flex justify-between items-center">
                     <span className="text-xs font-bold uppercase tracking-[0.3em] opacity-40">Program 0{idx + 1}</span>
                     <motion.div 
@@ -595,7 +588,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Impact Stats */}
       <section className="py-48 px-6 bg-accent text-white overflow-hidden relative">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center relative z-10">
           <StatCounter value="150+" label="Housing Units" />
@@ -603,20 +595,17 @@ export default function App() {
           <StatCounter value="25+" label="Businesses Incubated" />
           <StatCounter value="10k+" label="Meals Served" />
         </div>
-        {/* Animated background text */}
         <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
           <motion.p 
-            style={{ x: useTransform(scrollYProgress, [0.5, 0.8], ["-20%", "20%"]) }}
+            style={{ x: impactX }}
             className="text-[25vw] font-serif font-black italic whitespace-nowrap"
           >
-            IMPACT • IMPACT • IMPACT • IMPACT
+            IMPACT &bull; IMPACT &bull; IMPACT &bull; IMPACT
           </motion.p>
         </div>
       </section>
 
-      {/* About Section */}
       <section id="about" className="py-32 px-6 overflow-hidden relative">
-        {/* SVG Drawing Line */}
         <svg className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-10" viewBox="0 0 1000 1000">
           <motion.path
             ref={pathRef}
@@ -624,9 +613,7 @@ export default function App() {
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            style={{ 
-              pathLength: useTransform(pathScrollYProgress, [0, 1], [0, 1])
-            }}
+            style={{ pathLength: pathLength }}
           />
         </svg>
 
@@ -675,22 +662,16 @@ export default function App() {
                     src={aboutImage}
                     alt="Josephine County" 
                     className="w-full h-full object-cover"
-                    referrerPolicy="no-referrer"
                   />
                 </div>
               </motion.div>
               <motion.div 
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  y: [0, -10, 0]
-                }}
+                animate={{ scale: [1, 1.2, 1], y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-zinc-900 p-6 rounded-full shadow-2xl z-20"
               >
                 <Heart className="text-accent fill-accent" size={48} />
               </motion.div>
-              
-              {/* Floating elements */}
               <motion.div 
                 animate={{ y: [0, -20, 0] }}
                 transition={{ duration: 4, repeat: Infinity, delay: 1 }}
@@ -710,7 +691,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Public Notice Section */}
       <section id="public" className="py-32 px-6 bg-primary/5 relative overflow-hidden">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-24 items-center relative z-10">
           <motion.div
@@ -745,21 +725,17 @@ export default function App() {
           
           <motion.div 
             className="relative"
-            style={{ rotate: useTransform(scrollYProgress, [0.7, 0.9], [0, 10]) }}
+            style={{ rotate: publicRotate }}
           >
             <div className="aspect-[3/4] rounded-[4rem] overflow-hidden shadow-2xl">
               <img 
                 src={transparencyImage}
                 alt="Transparency" 
                 className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
               />
             </div>
             <motion.div 
-              animate={{ 
-                scale: [1, 1.1, 1],
-                rotate: [-12, -8, -12]
-              }}
+              animate={{ scale: [1, 1.1, 1], rotate: [-12, -8, -12] }}
               transition={{ duration: 4, repeat: Infinity }}
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-accent rounded-full flex items-center justify-center text-white shadow-2xl"
             >
@@ -769,7 +745,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Contact Section */}
       <section id="contact" className="py-32 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div 
@@ -846,9 +821,7 @@ export default function App() {
               )}
             </div>
             <div className="bg-primary p-12 md:p-24 text-white flex flex-col justify-between relative overflow-hidden">
-              {/* Decorative circle */}
               <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-              
               <div className="relative z-10">
                 <h3 className="text-3xl md:text-4xl font-serif font-bold mb-12 italic leading-tight">"Strengthening Partnerships And Reviving Communities."</h3>
                 <div className="space-y-8">
@@ -866,7 +839,6 @@ export default function App() {
                   </motion.div>
                 </div>
               </div>
-              
               <div className="mt-16 pt-16 border-t border-white/10 relative z-10">
                 <p className="text-sm font-bold uppercase tracking-widest opacity-60 mb-6">Follow our journey</p>
                 <div className="flex flex-wrap gap-8">
@@ -880,7 +852,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-20 px-6 border-t border-ink/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
           <div className="flex items-center gap-3">
@@ -889,12 +860,10 @@ export default function App() {
             </div>
             <span className="font-serif text-2xl font-bold tracking-tight">Sparc Wise</span>
           </div>
-          
           <p className="text-sm opacity-40 max-w-md text-center md:text-left">
-            © 2026 Sparc Wise. 501(c)(3) Nonprofit Organization. <br />
+            &copy; 2026 Sparc Wise. 501(c)(3) Nonprofit Organization. <br />
             Dedicated to uplifting Josephine County, Oregon.
           </p>
-          
           <div className="flex gap-8">
             <a href="#" className="text-sm font-bold uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Privacy</a>
             <a href="#" className="text-sm font-bold uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Terms</a>
