@@ -1,4 +1,4 @@
-name: Deploy Website to cPanel
+name: Deploy Website to DreamHost
 
 on:
   push:
@@ -9,28 +9,54 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get latest code
+    - name: "\U0001F69A Get latest code"
       uses: actions/checkout@v4
 
-    - name: ⚙️ Setup Node.js
+    - name: "\u2699\uFE0F Setup Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
 
-    - name: 📦 Install dependencies
+    - name: "\U0001F4E6 Install dependencies"
       run: npm install
 
-    - name: 🏗️ Build Project
+    - name: "\U0001F3D7\uFE0F Build Project"
       run: npm run build
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
-    - name: 🚀 Sync files
+    - name: "\U0001F4DD Create .htaccess"
+      run: |
+        cat > dist/.htaccess << 'HTACCESS'
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^ index.html [QSA,L]
+
+        <IfModule mod_deflate.c>
+          AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+        </IfModule>
+
+        <IfModule mod_expires.c>
+          ExpiresActive On
+          ExpiresByType text/css "access plus 1 year"
+          ExpiresByType application/javascript "access plus 1 year"
+          ExpiresByType image/png "access plus 1 year"
+          ExpiresByType image/jpeg "access plus 1 year"
+          ExpiresByType image/svg+xml "access plus 1 year"
+        </IfModule>
+
+        <IfModule mod_headers.c>
+          Header set X-Content-Type-Options "nosniff"
+          Header set X-Frame-Options "SAMEORIGIN"
+          Header set X-XSS-Protection "1; mode=block"
+        </IfModule>
+        HTACCESS
+
+    - name: "\U0001F680 Deploy via FTP"
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: dist/
-        server-dir: public_html/
+        server-dir: ./
