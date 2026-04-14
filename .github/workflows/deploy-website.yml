@@ -1,62 +1,59 @@
-name: Deploy Website to DreamHost
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: "\U0001F69A Get latest code"
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: "\u2699\uFE0F Setup Node.js"
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-    - name: "\U0001F4E6 Install dependencies"
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: "\U0001F3D7\uFE0F Build Project"
-      run: npm run build
+      - name: Build
+        run: npm run build
 
-    - name: "\U0001F4DD Create .htaccess"
-      run: |
-        cat > dist/.htaccess << 'HTACCESS'
-        RewriteEngine On
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteRule ^ index.html [QSA,L]
+      - name: Add CNAME for custom domain
+        run: echo "sparcwise.org" > dist/CNAME
 
-        <IfModule mod_deflate.c>
-          AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
-        </IfModule>
+      - name: Add 404.html for SPA routing
+        run: cp dist/index.html dist/404.html
 
-        <IfModule mod_expires.c>
-          ExpiresActive On
-          ExpiresByType text/css "access plus 1 year"
-          ExpiresByType application/javascript "access plus 1 year"
-          ExpiresByType image/png "access plus 1 year"
-          ExpiresByType image/jpeg "access plus 1 year"
-          ExpiresByType image/svg+xml "access plus 1 year"
-        </IfModule>
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
-        <IfModule mod_headers.c>
-          Header set X-Content-Type-Options "nosniff"
-          Header set X-Frame-Options "SAMEORIGIN"
-          Header set X-XSS-Protection "1; mode=block"
-        </IfModule>
-        HTACCESS
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
 
-    - name: "\U0001F680 Deploy via FTP"
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: dist/
-        server-dir: ./
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
