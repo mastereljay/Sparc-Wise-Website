@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+*.local
+.env
+.env.*
+.deploy_key
+.deploy_key.pub
+ssh_cmd.exp
+.npm-cache/
