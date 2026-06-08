@@ -307,7 +307,7 @@ export default function App() {
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <motion.a 
-              href="#contact" 
+              href="#donate" 
               whileHover={{ scale: 1.1, x: 5, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="bg-primary text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-all hover:shadow-lg shadow-primary/20"
@@ -347,9 +347,15 @@ export default function App() {
                   {item.label}
                 </a>
               ))}
-              <button className="bg-primary text-white py-4 rounded-xl text-lg font-bold mt-8 shadow-xl">
+              <motion.a
+                href="#donate"
+                onClick={() => setIsMenuOpen(false)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-primary text-white py-4 rounded-xl text-lg font-bold mt-8 shadow-xl block text-center"
+              >
                 Donate Now
-              </button>
+              </motion.a>
             </div>
           </motion.div>
         )}
@@ -745,6 +751,88 @@ export default function App() {
               <span className="font-serif italic text-2xl font-bold">Verified</span>
             </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+      <section id="donate" className="py-32 px-6 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-1 lg:grid-cols-12 gap-16 items-start relative z-10">
+          
+          {/* Left Column: Copy & Details */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-5 space-y-8"
+          >
+            <div>
+              <span className="inline-block px-4 py-1 rounded-full border border-accent/30 text-xs font-bold uppercase tracking-[0.2em] mb-6 text-accent">
+                Make an Impact
+              </span>
+              <TextReveal text="Support Our Mission" className="text-4xl md:text-6xl font-serif font-bold mb-8 leading-tight" />
+              <p className="text-xl opacity-70 leading-relaxed mb-6">
+                At SPARC WISE, we know that change starts with people like you. Every act of kindness, every dollar, and every moment of your time brings us closer to achieving our mission.
+              </p>
+              <p className="text-lg opacity-70 leading-relaxed">
+                Together, we can create a brighter, more compassionate world for all in Josephine County.
+              </p>
+            </div>
+
+            <div className="space-y-6 pt-4">
+              {[
+                {
+                  title: "100% Tax Deductible",
+                  desc: "As a registered 501(c)(3) nonprofit organization, all donations to Sparc Wise are fully tax-deductible."
+                },
+                {
+                  title: "No Platform Fees",
+                  desc: "We use Zeffy for our campaigns, ensuring that 100% of your donation goes directly to our community programs instead of processor fees."
+                },
+                {
+                  title: "Direct Community Impact",
+                  desc: "Your contribution directly funds transitional housing conversions, workforce trade schools, and local food distribution."
+                }
+              ].map((item, i) => (
+                <div key={i} className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 text-accent">
+                    <Heart size={20} className="fill-accent/20" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg mb-1">{item.title}</h4>
+                    <p className="text-sm opacity-60 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right Column: Embedded Zeffy Form */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7 w-full bg-white dark:bg-zinc-900/50 backdrop-blur-md rounded-[3rem] border border-ink/5 dark:border-white/10 p-4 md:p-6 shadow-2xl overflow-hidden"
+          >
+            <div className="relative w-full h-[750px] overflow-hidden rounded-[2rem]">
+              <iframe
+                title="Donation form powered by Zeffy"
+                style={{
+                  position: 'absolute',
+                  border: 0,
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: 'transparent'
+                }}
+                src="https://www.zeffy.com/embed/donation-form/donate-to-change-lives-15646"
+                allow="payment"
+              />
+            </div>
+          </motion.div>
+
         </div>
       </section>
 
