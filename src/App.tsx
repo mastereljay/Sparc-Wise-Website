@@ -70,7 +70,7 @@ const StatCounter = ({ value, label }: { value: string, label: string }) => {
         whileInView={{ opacity: 1, scale: 1 }}
         className="absolute -inset-4 bg-white/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity"
       />
-      <p className="text-5xl md:text-7xl font-serif font-bold mb-2 text-accent relative z-10">
+      <p className="text-5xl md:text-7xl font-serif font-bold mb-2 text-white relative z-10">
         {count}{suffix}
       </p>
       <p className="text-xs uppercase tracking-[0.3em] opacity-60 font-bold relative z-10">{label}</p>
