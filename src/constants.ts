@@ -82,5 +82,6 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Directory', href: '#directory' },
   { label: 'About', href: '#about' },
   { label: 'Public', href: '#public' },
+  { label: 'Donate', href: '#donate' },
   { label: 'Contact', href: '#contact' }
 ];

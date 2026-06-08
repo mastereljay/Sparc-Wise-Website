@@ -956,6 +956,7 @@ export default function App() {
             Dedicated to uplifting Josephine County, Oregon.
           </p>
           <div className="flex gap-8">
+            <a href="#donate" className="text-sm font-bold uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Donate</a>
             <a href="#" className="text-sm font-bold uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Privacy</a>
             <a href="#" className="text-sm font-bold uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Terms</a>
           </div>
