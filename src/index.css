@@ -8,7 +8,7 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   --color-primary: #5A5A40; /* Olive/Earth tone from Recipe 6 */
-  --color-accent: #FF6321; /* Bold orange from Recipe 10 */
+  --color-accent: #FFB612; /* Gold accent */
 }
 
 @layer base {

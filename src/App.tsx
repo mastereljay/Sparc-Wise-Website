@@ -567,7 +567,7 @@ export default function App() {
                   <ul className="space-y-4">
                     {program.details.map((detail, i) => (
                       <li key={i} className="flex items-start gap-4 text-sm opacity-80 group-hover:opacity-100 transition-opacity">
-                        <div className="w-2.5 h-2.5 rounded-full bg-accent mt-1.5 shrink-0 shadow-[0_0_15px_rgba(255,99,33,0.6)]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-accent mt-1.5 shrink-0 shadow-[0_0_15px_rgba(255,182,18,0.6)]" />
                         {detail}
                       </li>
                     ))}
