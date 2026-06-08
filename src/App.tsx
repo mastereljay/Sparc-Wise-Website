@@ -24,6 +24,7 @@ import {
   Heart
 } from 'lucide-react';
 import { cn } from './lib/utils';
+import CommunityDirectory from './components/CommunityDirectory';
 import { PROGRAMS, NAV_ITEMS } from './constants';
 import heroImage from './images/heroimage2.png';
 import visionImage from './images/river.png';
@@ -587,6 +588,8 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      <CommunityDirectory />
 
       <section className="py-48 px-6 bg-accent text-white overflow-hidden relative">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center relative z-10">

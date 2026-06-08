@@ -79,6 +79,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Vision', href: '#vision' },
   { label: 'News', href: '#news' },
   { label: 'Programs', href: '#programs' },
+  { label: 'Directory', href: '#directory' },
   { label: 'About', href: '#about' },
   { label: 'Public', href: '#public' },
   { label: 'Contact', href: '#contact' }
